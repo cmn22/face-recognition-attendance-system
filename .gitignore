@@ -1,0 +1,51 @@
+# Ignore the virtual environment folder
+venv/
+
+# Ignore compiled Python files
+__pycache__/
+*.py[cod]
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Ignore IDE/editor-specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Ignore environment and dependency files
+.env
+*.env
+*.venv
+Pipfile
+Pipfile.lock
+poetry.lock
+
+# Ignore logs and system files
+*.log
+*.sqlite3
+*.db
+.DS_Store
+*.pyo
+*.pyd
+
+# Ignore pytest and coverage reports
+.coverage
+*.cover
+.hypothesis/
+nosetests.xml
+coverage.xml
+htmlcov/
+pytest_cache/
+
+# Ignore compiled libraries
+*.so
+*.dll
+*.dylib
+
+# Ignore Python egg files
+*.egg
+*.egg-info/
+dist/
+build/
