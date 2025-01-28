@@ -6,3 +6,4 @@ jupyter
 opencv-python
 insightface
 onnxruntime
+redis
