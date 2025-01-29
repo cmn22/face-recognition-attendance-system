@@ -31,18 +31,28 @@ def retrive_data(name):
     r = get_redis_connection()
     retrive_dict = r.hgetall(name)
     
-    # Vectorized operations instead of apply
-    retrive_series = pd.Series({k.decode(): np.frombuffer(v, dtype=np.float32) 
-                               for k, v in retrive_dict.items()})
-    
-    # More efficient DataFrame creation
+    # If Redis is empty, initialize an empty DataFrame with correct structure
+    if not retrive_dict:
+        print(f"Warning: No data found in Redis for '{name}'. Initializing empty dataset.")
+        return pd.DataFrame(columns=['Name', 'Role', 'facial_features'])
+
+    # Convert Redis binary data to Pandas DataFrame
+    retrive_series = pd.Series({
+        k.decode(): np.frombuffer(v, dtype=np.float32) 
+        for k, v in retrive_dict.items()
+    })
+
     retrive_df = pd.DataFrame({
         'name_role': retrive_series.index,
         'facial_features': retrive_series.values
     })
-    
-    # Split name_role more efficiently
+
+    # Ensure name_role is a string column before applying .str functions
+    retrive_df['name_role'] = retrive_df['name_role'].astype(str)
+
+    # Apply the split safely
     retrive_df[['Name', 'Role']] = retrive_df['name_role'].str.split('@', expand=True)
+
     return retrive_df[['Name', 'Role', 'facial_features']]
 
 # Configure face analysis with optimal settings
