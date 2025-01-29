@@ -10,3 +10,4 @@ streamlit==1.28.2
 streamlit-webrtc
 insightface
 onnxruntime
+pytest
