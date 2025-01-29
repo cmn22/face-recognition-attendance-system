@@ -1,8 +1,12 @@
+# matplotlib
+# scipy
+# jupyter
 numpy
 pandas
-matplotlib
-scipy
-jupyter
+redis
 opencv-python
+scikit-learn
+streamlit==1.28.2
+streamlit-webrtc
 insightface
 onnxruntime
