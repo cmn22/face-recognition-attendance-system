@@ -10,5 +10,5 @@ st.header('Attendance System using Face Recognition')
 with st.spinner("Loading Models and Conneting to Redis db ..."):
     import face_rec
     
-st.success('Model loaded sucesfully')
+st.success('Model loaded sucesfully: testing PIPLINE')
 st.success('Redis db sucessfully connected')
