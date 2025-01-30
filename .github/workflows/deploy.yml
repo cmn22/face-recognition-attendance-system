@@ -1,0 +1,29 @@
+name: Deploy Streamlit App
+
+on:
+  push:
+    branches:
+      - prod  # Only deploy changes from the production branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: SSH into EC2 & Deploy
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+          EC2_USER: ubuntu
+          EC2_HOST: your-ec2-public-ip
+        run: |
+          echo "$SSH_PRIVATE_KEY" > private_key.pem
+          chmod 600 private_key.pem
+          ssh -o StrictHostKeyChecking=no -i private_key.pem $EC2_USER@$EC2_HOST << 'EOF'
+            cd ~/face-recognition-attendance-system
+            git pull origin prod
+            docker compose down
+            docker compose up -d --build
+          EOF
