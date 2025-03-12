@@ -7,14 +7,17 @@ from sklearn.metrics import pairwise
 from datetime import datetime
 import os
 from functools import lru_cache
+from dotenv import load_dotenv
 
+# Load environment variables from .env
+load_dotenv()
 
-# Connect to Redis Client
-hostname = 'redis-12955.crce179.ap-south-1-1.ec2.redns.redis-cloud.com'
-portnumber = 12955
-password = '0AXzSpM3wa8utdJhuvvpRF8Iwc4TNVT3'
+# Retrieve Redis credentials
+hostname = os.getenv("REDIS_HOST")
+portnumber = int(os.getenv("REDIS_PORT"))
+password = os.getenv("REDIS_PASSWORD")
 
-# Initialize the Redis connection pool first
+# Initialize Redis connection pool
 REDIS_POOL = redis.ConnectionPool(
     host=hostname,
     port=portnumber,
