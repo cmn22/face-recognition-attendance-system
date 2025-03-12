@@ -1,5 +1,5 @@
 # **Face Recognition Attendance System**
-A real-time **face recognition-based attendance system** using **Streamlit, Redis, and InsightFace**. This system detects faces, matches them with stored embeddings, and logs attendance in Redis.
+A real-time **face recognition-based attendance system** using **Python, Streamlit, Redis, and InsightFace**. This system detects faces, matches them with stored embeddings, and logs attendance in Redis.
 
 ## **🚀 Features**
 - **Face Registration**: Users can register their faces and roles (e.g., Student, Teacher).
@@ -16,11 +16,39 @@ git clone https://github.com/yourusername/face-recognition-attendance-system.git
 cd face-recognition-attendance-system
 ```
 
-### **2️⃣ Install Dependencies**
-Ensure you have **Python 3.11+** installed, then run:
-```bash
-pip install -r requirements.txt
-```
+### **2️⃣ Setting up Virtual Environment and Installing Dependencies**
+For consistent and reproducible results, it's recommended to use a virtual environment.
+
+#### **Mac/Linux**
+1. Open the terminal.
+2. Navigate to the project directory:
+   ```bash
+   cd /path/to/project
+3. Create a virtual environment:
+   ```bash
+   python3 -m venv venv
+4. Activate the virtual environment:
+   ```bash
+   source venv/bin/activate
+5. Install required dependencies:
+   ```bash
+   pip install -r requirements.txt
+
+#### **Windows**
+1. Open the Command Prompt or PowerShell. 
+2. Navigate to the project directory:
+   ```bash
+   cd \path\to\project
+3. Create a virtual environment:
+   ```bash
+   python -m venv venv
+4. Activate the virtual environment:
+   ```bash
+   venv\Scripts\activate
+5. Install required dependencies:
+   ```bash
+   pip install -r requirements.txt
+
 
 ### **3️⃣ Configure Environment Variables**
 - Create a `.env` file using the example template:
