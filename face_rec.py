@@ -7,15 +7,12 @@ from sklearn.metrics import pairwise
 from datetime import datetime
 import os
 from functools import lru_cache
-from dotenv import load_dotenv
+import streamlit as st
 
-# Load environment variables from .env
-load_dotenv()
-
-# Retrieve Redis credentials
-hostname = os.getenv("REDIS_HOST")
-portnumber = int(os.getenv("REDIS_PORT"))
-password = os.getenv("REDIS_PASSWORD")
+# Retrieve Redis credentials from secrets.toml
+hostname = st.secrets["redis"]["host"]
+portnumber = int(st.secrets["redis"]["port"])
+password = st.secrets["redis"]["password"]
 
 # Initialize Redis connection pool
 REDIS_POOL = redis.ConnectionPool(

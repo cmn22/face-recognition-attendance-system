@@ -21,6 +21,7 @@ __pycache__/
 Pipfile
 Pipfile.lock
 poetry.lock
+.streamlit/secrets.toml
 
 # Ignore logs and system files
 *.log
