@@ -16,6 +16,7 @@ __pycache__/
 
 # Ignore environment and dependency files
 .env
+.streamlit
 *.env
 *.venv
 Pipfile
