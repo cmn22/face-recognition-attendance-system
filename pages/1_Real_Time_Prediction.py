@@ -1,54 +1,78 @@
-import streamlit as st 
+import streamlit as st
 from Home import face_rec
 from streamlit_webrtc import webrtc_streamer
 import av
 import time
 from functools import lru_cache
 
+# ==============================================
+# UI Configuration
+# ==============================================
 st.subheader('Real-Time Attendance System')
 
-# Cache the database retrieval
+# ==============================================
+# Data Retrieval Setup
+# ==============================================
 @lru_cache(maxsize=1)
 def get_redis_face_db():
+    """Cache and retrieve face data from Redis database"""
     return face_rec.retrive_data(name='academy:register')
 
-# Retrieve the data from Redis Database
-with st.spinner('Retrieving Data from Redis DB ...'):    
+# Display loading state while fetching data
+with st.spinner('Retrieving Data from Redis DB...'):    
     redis_face_db = get_redis_face_db()
     st.dataframe(redis_face_db)
 
 st.success("Data successfully retrieved from Redis")
 
-# Initialize time tracking
-WAIT_TIME = 30  # time in sec
+# ==============================================
+# Real-Time Processing Configuration
+# ==============================================
+# Time interval for saving logs (in seconds)
+LOG_SAVE_INTERVAL = 30  
 last_save_time = time.time()
 realtimepred = face_rec.RealTimePred()
 
 def video_frame_callback(frame):
+    """
+    Processes each video frame to:
+    1. Detect and recognize faces
+    2. Track attendance
+    3. Periodically save logs
+    """
     global last_save_time
     
-    # Convert frame efficiently
+    # Convert video frame to numpy array
     img = frame.to_ndarray(format="bgr24")
     
-    # Process frame
+    # Perform face recognition
     pred_img = realtimepred.face_prediction(
-        img, redis_face_db, 
-        'facial_features', 
-        ['Name', 'Role'], 
+        img, 
+        redis_face_db, 
+        feature_column='facial_features', 
+        name_role=['Name', 'Role'], 
         thresh=0.5
     )
     
-    # Check if it's time to save logs
+    # Periodic saving of attendance logs
     current_time = time.time()
-    if current_time - last_save_time >= WAIT_TIME:
+    if current_time - last_save_time >= LOG_SAVE_INTERVAL:
         realtimepred.saveLogs_redis()
         last_save_time = current_time
     
     return av.VideoFrame.from_ndarray(pred_img, format="bgr24")
 
-# Initialize webRTC streamer
+# ==============================================
+# WebRTC Video Stream Setup
+# ==============================================
 webrtc_streamer(
     key="realtimePrediction",
     video_frame_callback=video_frame_callback,
-    rtc_configuration={"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]}
+    rtc_configuration={
+        "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]
+    },
+    media_stream_constraints={
+        "video": True,
+        "audio": False
+    }
 )
